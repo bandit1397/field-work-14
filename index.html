@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>현장 업무처리 14종</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      min-height: 100vh;
+      font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: #f5f7fa;
+      color: #222;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      display: block;
+      margin: 0.5rem 0;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    .sub-content {
+      margin-left: 1rem;
+      margin-top: 0.5rem;
+      background: #eef;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+
+    #feedback-btn {
+      margin: 0.3rem auto;
+    }
+
+    /* 로고(표지) 화면 */
+    #logo-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      background: #b3141b;
+      background: linear-gradient(160deg, #d21f27 0%, #8f0f15 100%);
+      cursor: pointer;
+      transition: transform 2s ease, opacity 2s ease;
+    }
+
+    #logo-screen .badge {
+      border: 3px solid #ffd24d;
+      color: #ffd24d;
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      letter-spacing: 2px;
+      margin-bottom: 1.4rem;
+    }
+
+    #logo-screen .stars {
+      color: #ffd24d;
+      letter-spacing: 6px;
+      font-size: 1.2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    #logo-screen h1 {
+      color: #fff;
+      font-size: 2.6rem;
+      margin: 0;
+      text-align: center;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    #logo-screen .sub {
+      color: #ffe6a1;
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    #logo-screen .tap {
+      color: #ffffffcc;
+      margin-top: 2.4rem;
+      font-size: 0.9rem;
+      animation: blink 1.4s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 1; }
+    }
+
+    .logo-zoom-out {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+
+    /* 매뉴얼 화면 */
+    #manual-screen {
+      padding: 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+      transform: scale(0.8);
+      opacity: 0;
+      transition: transform 1s ease, opacity 1s ease;
+      pointer-events: none;
+    }
+
+    #manual-screen.show {
+      transform: scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    ul, li {
+      list-style-type: none !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    li::before { content: none !important; }
+    li::marker { content: none !important; }
+
+    .highlight { color: blue; font-weight: bold; }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .flow .step {
+      border: 1px dashed #888;
+      border-radius: 6px;
+      padding: 0.35rem 0.55rem;
+      background: #fafafa;
+    }
+
+    .flow .arrow { color: #d21f27; font-weight: bold; }
+
+    /* 이미지 모달 */
+    .doc-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .doc-modal.open { display: flex; }
+
+    .doc-modal .box {
+      width: 94%;
+      max-width: 1000px;
+      height: 90%;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .doc-modal .header {
+      padding: 0.6rem 1rem;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .doc-modal .header .title { font-weight: 600; }
+
+    .doc-modal .content {
+      flex: 1;
+      background: #333;
+      overflow: auto;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .doc-modal .content img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .link-button {
+      border: 1px solid #ccc;
+      background: #f6f6f6;
+      padding: 0.4rem 0.7rem;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #111;
+    }
+
+    .hidden { display: none; }
+
+    .notice-box {
+      background: #fff7e6;
+      border: 1px solid #ffd591;
+      border-radius: 6px;
+      padding: 0.6rem 0.8rem;
+      font-size: 0.85rem;
+      color: #663c00;
+      margin-top: 0.6rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 표지 화면 -->
+<div id="logo-screen">
+  <div class="badge">지역경찰</div>
+  <div class="stars">★ ★ ★ ★ ★ ★ ★</div>
+  <h1>현장 업무처리 14종</h1>
+  <div class="sub">지역경찰 실전 액션 가이드</div>
+  <div class="tap">화면을 눌러 시작하기</div>
+</div>
+
+<div id="manual-screen">
+
+  <h1 style="text-align:center; margin-top:0; padding:1rem 0; font-size:1.7rem;">
+    현장 업무처리 14종
+  </h1>
+  <p style="text-align:center; margin-top:-0.6rem; color:#666; font-size:0.9rem;">
+    PART 01. 경범죄 및 즉결심판 처리절차
+  </p>
+
+  <div class="section">
+    <h2>1. 절차 선택</h2>
+    <label><input type="radio" name="사건" value="경범죄"> 경범죄(통고처분) 처리절차</label>
+    <label><input type="radio" name="사건" value="즉결심판"> 즉결심판 처리절차</label>
+  </div>
+
+  <div class="section hidden" id="세부항목섹션">
+    <h2>2. 절차 세부 항목</h2>
+    <div id="세부항목버튼영역"></div>
+  </div>
+
+  <div class="section" id="필수서류섹션">
+    <h2>3. 필수서류 · 유의사항</h2>
+    <div id="필수서류버튼영역">
+      <button data-항목="필수서류">필수서류</button>
+      <button data-항목="유의사항">유의사항</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>4. 원본 자료 보기</h2>
+    <button data-scan="scan-1.jpg">① 경범죄 처벌법 조항 · 처리절차</button>
+    <button data-scan="scan-2.jpg">② 즉결심판 처리 절차</button>
+    <button data-scan="scan-3.jpg">③ 즉결심판 전자화 업무처리 절차</button>
+  </div>
+
+  <div style="text-align: center;">
+    <button
+      id="feedback-btn"
+      style="padding:12px 20px; font-size:16px; background:#d21f27; color:white; border:none; border-radius:6px; cursor:pointer;"
+      onclick="window.open('https://github.com/bandit1397/field-work-14/issues', '_blank');"
+    >
+      오류 &amp; 추가 의견 남기기
+    </button>
+  </div>
+
+</div>
+
+<!-- 원본 이미지 모달 -->
+<div id="docModal" class="doc-modal" role="dialog" aria-hidden="true">
+  <div class="box" role="document">
+    <div class="header">
+      <div class="title" id="docTitle">원본 자료</div>
+      <div class="actions">
+        <a id="docDownload" class="link-button" href="#" download>다운로드</a>
+        <button id="docClose" class="link-button">닫기</button>
+      </div>
+    </div>
+    <div class="content" id="docContent"></div>
+  </div>
+</div>
+
+<script>
+function 색상변환(text) {
+  return text
+    .replace(/\|\|\|(.+?)\|\|\|/g, '<span style="color: green; font-weight: bold;">$1</span>')
+    .replace(/\|\|(.+?)\|\|/g, '<span style="color: blue; font-weight: bold;">$1</span>')
+    .replace(/\|(.+?)\|/g, '<span style="color: red; font-weight: bold;">$1</span>');
+}
+
+/* ===== 데이터 (원본 자료 기반) ===== */
+const 세부내용Depth = {
+  "경범죄": {
+    "경범죄 처벌법 조항": [
+      { text: "□ |목적|", depth: 0 },
+      { text: "→ 경범죄의 종류 및 처벌에 필요한 사항을 정함으로써 국민의 자유와 권리를 보호하고 사회공공의 질서유지에 이바지함", depth: 1 },
+
+      { text: "□ ||10만원 이하|| 벌금·구류 또는 과료  |(자주 단속하는 조항)|", depth: 0 },
+      { text: "→ 불안감 조성", depth: 1 },
+      { text: "→ 쓰레기 등 투기", depth: 1 },
+      { text: "→ 음주·인근 소란 등", depth: 1 },
+      { text: "→ 흉기의 은닉휴대", depth: 1 },
+      { text: "→ 거짓 인적사항 사용", depth: 1 },
+      { text: "→ 위험한 불씨사용", depth: 1 },
+      { text: "→ 무임승차 및 무전취식", depth: 1 },
+      { text: "→ 물품강매 및 호객행위", depth: 1 },
+
+      { text: "□ ||20만원 이하|| 벌금·구류 또는 과료", depth: 0 },
+      { text: "→ 출판물의 부당게재 등", depth: 1 },
+      { text: "→ 업무방해", depth: 1 },
+      { text: "→ 거짓 광고", depth: 1 },
+      { text: "→ 암표매매", depth: 1 },
+      { text: "※ |||50만원 이하||| 벌금·구류 또는 과료는 |'주거부정'|시 |현행범체포 가능|", depth: 1.5 },
+
+      { text: "□ ||60만원 이하|| 벌금·구류 또는 과료", depth: 0 },
+      { text: "→ 관공서 주취소란", depth: 1 },
+      { text: "→ 거짓신고", depth: 1 },
+    ],
+    "범칙자 · 통고처분 제외자": [
+      { text: "□ |범칙자 제외자| (범칙금 통고처분 대상 아님 → 즉결심판 청구)", depth: 0 },
+      { text: "→ 범칙행위를 |상습적|으로 하는 사람", depth: 1 },
+      { text: "→ 죄를 지은 동기·수단 및 결과를 헤아려볼 때 ||구류처분이 적절||하다고 인정되는 사람", depth: 1 },
+      { text: "→ |피해자가 있는| 행위를 한 사람", depth: 1 },
+      { text: "→ |18세 미만|인 사람", depth: 1 },
+
+      { text: "□ |통고처분 제외자|", depth: 0 },
+      { text: "→ 통고처분 |받기를 거부|한 사람", depth: 1 },
+      { text: "→ |주거 또는 신원이 확실하지 아니한| 사람", depth: 1 },
+    ],
+    "처리절차 (폴리폰)": [
+      { text: "□ 폴리폰 입력 순서", depth: 0 },
+      { text: "→ ① |폴리폰 접속|", depth: 1 },
+      { text: "→ ② |경범 / 즉심| 클릭", depth: 1 },
+      { text: "→ ③ |주민번호 조회|  ||(수배 내역 확인 가능)||", depth: 1 },
+      { text: "→ ④ 위반 일시·장소 입력", depth: 1 },
+      { text: "→ ⑤ 법조항 선택", depth: 1 },
+      { text: "→ ⑥ 전화번호 입력", depth: 1 },
+      { text: "→ ⑦ 사건개요 입력", depth: 1 },
+      { text: "→ ⑧ |위반자 서명|  |||(서명 거부 시 '거부' 체크)|||", depth: 1 },
+      { text: "→ ⑨ |통고처분 발부|", depth: 1 },
+    ],
+    "필수서류": [
+      { text: "▸ ||통고처분서|| (위반자 교부용)", depth: 0 },
+      { text: "▸ ||범칙금 납부통고서||", depth: 0 },
+      { text: "▸ 위반자 서명 (거부 시 |거부 체크| 및 수사보고)", depth: 0 },
+      { text: "▸ 즉결심판 청구 대상인 경우 ||즉결심판 청구서|| · ||적발보고서||", depth: 0 },
+    ],
+    "유의사항": [
+      { text: "□ 통고처분 불이행 시", depth: 0 },
+      { text: "→ 1차 납부기간(10일) 경과 → |가산금 20%| 부과 후 2차 통고", depth: 1 },
+      { text: "→ 2차 납부기간 경과 → |즉결심판 청구|", depth: 1 },
+      { text: "□ |주거부정| + 50만원 이하 벌금·구류·과료 대상 → |현행범체포 가능|", depth: 0 },
+      { text: "□ 범칙자가 범칙금 납부 시 → |동일 행위로 다시 처벌받지 않음|", depth: 0 },
+      { text: "□ 18세 미만자는 |범칙자 제외| → 소년보호 절차 또는 즉결심판 검토", depth: 0 },
+    ],
+  },
+
+  "즉결심판": {
+    "즉결심판 개요": [
+      { text: "□ |제1조(목적)|", depth: 0 },
+      { text: "→ 범증이 |명백|하고 죄질이 |경미|한 범죄사건을 신속·적정한 절차로 심판", depth: 1 },
+      { text: "□ |선고 범위|", depth: 0 },
+      { text: "→ ||20만원 이하||의 벌금, 구류 또는 과료에 처할 수 있음", depth: 1 },
+      { text: "□ 청구권자", depth: 0 },
+      { text: "→ |관할 경찰서장| 또는 |해양경찰서장|이 관할 법원에 청구", depth: 1 },
+    ],
+    "처리절차 (폴리폰)": [
+      { text: "□ 폴리폰 입력 순서", depth: 0 },
+      { text: "→ ① |출석일시·장소 입력|  ||(폴리폰 / 즉결심판 및 통고처분 시스템 - 내부망)||", depth: 1 },
+      { text: "→ ② 주민번호 조회", depth: 1 },
+      { text: "→ ③ 직업 / 전화번호 입력", depth: 1 },
+      { text: "→ ④ 위반 일시·장소 입력", depth: 1 },
+      { text: "→ ⑤ 법조항 선택", depth: 1 },
+      { text: "→ ⑥ 범죄내용 입력", depth: 1 },
+      { text: "→ ⑦ |위반자 서명|  |||(서명 거부 시 '거부' 체크)|||", depth: 1 },
+      { text: "→ ⑧ |즉심 통지서 발부|", depth: 1 },
+      { text: "※ |피해자 정보 입력| (필요시)", depth: 1.5 },
+    ],
+    "전자화 업무처리 절차": [
+      { text: "□ |단속(지역관서)|", depth: 0 },
+      { text: "→ 현장단속은 기존과 동일", depth: 1 },
+      { text: "→ 시스템상 기안·상신 → ||전자결재·발송||", depth: 1 },
+      { text: "□ |청구(경찰서)|", depth: 0 },
+      { text: "→ 시스템상 기안·상신 → 전자결재", depth: 1 },
+      { text: "→ ||법원에 서류 일체 전자발송||", depth: 1 },
+      { text: "□ |집행보고(경찰서)|", depth: 0 },
+      { text: "→ 즉결심판 시스템상 기안·상신 → ||검찰청 시스템에 전자발송||", depth: 1 },
+      { text: "□ |민원(경찰서)|", depth: 0 },
+      { text: "→ |경찰민원24|를 이용해 온라인 청구 및 심판 결과·납부계좌 |실시간 조회 가능|", depth: 1 },
+
+      { text: "□ ||시스템 처리 순서||", depth: 0 },
+      { text: "→ ① 전자문서 관리 탭 → |'즉결심판 전자문서 관리'|", depth: 1 },
+      { text: "→ ② 청구서·주민등록번호 등으로 |대상자 조회|", depth: 1 },
+      { text: "→ ③ 청구정보 확인 후 |적발보고서 전자결재|", depth: 1 },
+      { text: "→ ④ |결재선 지정| 및 |수신처 지정|", depth: 1 },
+      { text: "- 팀원(기안) → 팀장(검토) → 대장(결재)", depth: 1.5 },
+      { text: "※ |||주말·야간은 순찰팀장 대결|||", depth: 2 },
+    ],
+    "필수서류": [
+      { text: "▸ ||즉결심판 청구서||", depth: 0 },
+      { text: "▸ ||즉결심판 적발보고서|| (전자결재)", depth: 0 },
+      { text: "▸ ||즉심 통지서|| (출석일시·장소 기재, 위반자 교부)", depth: 0 },
+      { text: "▸ 위반자 서명 (거부 시 |거부 체크| 및 수사보고)", depth: 0 },
+      { text: "▸ 피해자 정보 (필요시)", depth: 0 },
+      { text: "▸ 증거자료 (사진·진술 등, 범증 명백 입증)", depth: 0 },
+    ],
+    "유의사항": [
+      { text: "□ |불출석 심판|", depth: 0 },
+      { text: "→ 벌금·과료 선고 사건은 피고인 |불출석 상태로 심판 가능| (구류는 불가)", depth: 1 },
+      { text: "□ |정식재판 청구|", depth: 0 },
+      { text: "→ 피고인은 선고·고지일부터 |7일 이내| 정식재판 청구 가능", depth: 1 },
+      { text: "→ 경찰서장은 검사의 승인을 받아 정식재판 청구 가능", depth: 1 },
+      { text: "□ |즉결심판의 효력|", depth: 0 },
+      { text: "→ 정식재판 청구기간 경과 등으로 확정되면 |확정판결과 동일한 효력|", depth: 1 },
+      { text: "□ 범증이 명백하지 않거나 죄질이 경미하지 않으면 → |일반 형사절차|로 송치", depth: 0 },
+    ],
+  },
+};
+
+/* ===== UI 렌더링 ===== */
+function 글자크기적용(text, depth) {
+  if (depth === 0) return `<span style="font-size:0.95em;">${text}</span>`;
+  if (depth === 0.5) return `<span style="font-size:0.88em;">${text}</span>`;
+  if (depth === 1) return `<span style="font-size:0.85em;">${text}</span>`;
+  if (depth === 1.5) return `<span style="font-size:0.8em;">${text}</span>`;
+  if (depth === 2) return `<span style="font-size:0.75em;">${text}</span>`;
+  return text;
+}
+
+function applyTextTransforms(text, depth) {
+  return 글자크기적용(색상변환(text), depth);
+}
+
+function clearSubContents() {
+  document.querySelectorAll('.sub-content').forEach(el => el.remove());
+}
+
+function createSubContentDepth(사건, 항목) {
+  const 내용Div = document.createElement('div');
+  내용Div.className = 'sub-content';
+  const ul = document.createElement('ul');
+
+  const 항목내용 = 세부내용Depth[사건]?.[항목] || [];
+  항목내용.forEach(item => {
+    const li = document.createElement('li');
+    li.style.paddingLeft = `${item.depth * 20}px`;
+    li.style.paddingTop = '2px';
+    li.style.lineHeight = '1.6';
+    li.innerHTML = applyTextTransforms(item.text, item.depth);
+    ul.appendChild(li);
+  });
+
+  내용Div.appendChild(ul);
+  return 내용Div;
+}
+
+let currentEvent = null;
+
+document.querySelectorAll('input[name="사건"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    const 사건 = radio.value;
+    currentEvent = 사건;
+    const 세부버튼영역 = document.getElementById('세부항목버튼영역');
+    세부버튼영역.innerHTML = '';
+    const 항목들 = Object.keys(세부내용Depth[사건])
+      .filter(항목 => 항목 !== "필수서류" && 항목 !== "유의사항");
+    항목들.forEach(항목 => {
+      const btn = document.createElement('button');
+      btn.innerHTML = 색상변환(항목);
+      btn.addEventListener('click', () => {
+        clearSubContents();
+        const 내용 = createSubContentDepth(사건, 항목);
+        btn.insertAdjacentElement('afterend', 내용);
+      });
+      세부버튼영역.appendChild(btn);
+    });
+    document.getElementById('세부항목섹션').classList.remove('hidden');
+  });
+});
+
+document.querySelectorAll('#필수서류버튼영역 button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (!currentEvent) { alert("먼저 절차를 선택해주세요."); return; }
+    clearSubContents();
+    const 내용 = createSubContentDepth(currentEvent, btn.dataset.항목);
+    btn.insertAdjacentElement('afterend', 내용);
+  });
+});
+
+/* ===== 원본 이미지 모달 ===== */
+const modal = document.getElementById('docModal');
+const docTitle = document.getElementById('docTitle');
+const docContent = document.getElementById('docContent');
+const docDownload = document.getElementById('docDownload');
+const docClose = document.getElementById('docClose');
+
+docClose.addEventListener('click', closeDocumentModal);
+modal.addEventListener('click', (e) => { if (e.target === modal) closeDocumentModal(); });
+
+document.querySelectorAll('button[data-scan]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const src = btn.dataset.scan;
+    docTitle.textContent = btn.textContent.trim();
+    docContent.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = btn.textContent.trim();
+    docContent.appendChild(img);
+    docDownload.href = src;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+  });
+});
+
+function closeDocumentModal() {
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+/* ===== 표지 → 매뉴얼 전환 ===== */
+const logoScreen = document.getElementById('logo-screen');
+const manualScreen = document.getElementById('manual-screen');
+
+logoScreen.addEventListener('click', () => {
+  logoScreen.classList.add('logo-zoom-out');
+  setTimeout(() => {
+    logoScreen.style.display = 'none';
+    manualScreen.classList.add('show');
+  }, 1200);
+});
+</script>
+
+</body>
+</html>
