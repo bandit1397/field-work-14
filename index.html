@@ -255,10 +255,9 @@
   </div>
 
   <div class="section" id="필수서류섹션">
-    <h2>3. 필수서류 · 유의사항</h2>
+    <h2>3. 필수서류</h2>
     <div id="필수서류버튼영역">
       <button data-항목="필수서류">필수서류</button>
-      <button data-항목="유의사항">유의사항</button>
     </div>
   </div>
 
@@ -360,14 +359,6 @@ const 세부내용Depth = {
       { text: "▸ 위반자 서명 (거부 시 |거부 체크| 및 수사보고)", depth: 0 },
       { text: "▸ 즉결심판 청구 대상인 경우 ||즉결심판 청구서|| · ||적발보고서||", depth: 0 },
     ],
-    "유의사항": [
-      { text: "□ 통고처분 불이행 시", depth: 0 },
-      { text: "→ 1차 납부기간(10일) 경과 → |가산금 20%| 부과 후 2차 통고", depth: 1 },
-      { text: "→ 2차 납부기간 경과 → |즉결심판 청구|", depth: 1 },
-      { text: "□ |주거부정| + 50만원 이하 벌금·구류·과료 대상 → |현행범체포 가능|", depth: 0 },
-      { text: "□ 범칙자가 범칙금 납부 시 → |동일 행위로 다시 처벌받지 않음|", depth: 0 },
-      { text: "□ 18세 미만자는 |범칙자 제외| → 소년보호 절차 또는 즉결심판 검토", depth: 0 },
-    ],
   },
 
   "즉결심판": {
@@ -419,16 +410,6 @@ const 세부내용Depth = {
       { text: "▸ 피해자 정보 (필요시)", depth: 0 },
       { text: "▸ 증거자료 (사진·진술 등, 범증 명백 입증)", depth: 0 },
     ],
-    "유의사항": [
-      { text: "□ |불출석 심판|", depth: 0 },
-      { text: "→ 벌금·과료 선고 사건은 피고인 |불출석 상태로 심판 가능| (구류는 불가)", depth: 1 },
-      { text: "□ |정식재판 청구|", depth: 0 },
-      { text: "→ 피고인은 선고·고지일부터 |7일 이내| 정식재판 청구 가능", depth: 1 },
-      { text: "→ 경찰서장은 검사의 승인을 받아 정식재판 청구 가능", depth: 1 },
-      { text: "□ |즉결심판의 효력|", depth: 0 },
-      { text: "→ 정식재판 청구기간 경과 등으로 확정되면 |확정판결과 동일한 효력|", depth: 1 },
-      { text: "□ 범증이 명백하지 않거나 죄질이 경미하지 않으면 → |일반 형사절차|로 송치", depth: 0 },
-    ],
   },
 };
 
@@ -478,7 +459,7 @@ document.querySelectorAll('input[name="사건"]').forEach(radio => {
     const 세부버튼영역 = document.getElementById('세부항목버튼영역');
     세부버튼영역.innerHTML = '';
     const 항목들 = Object.keys(세부내용Depth[사건])
-      .filter(항목 => 항목 !== "필수서류" && 항목 !== "유의사항");
+      .filter(항목 => 항목 !== "필수서류");
     항목들.forEach(항목 => {
       const btn = document.createElement('button');
       btn.innerHTML = 색상변환(항목);
