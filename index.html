@@ -239,14 +239,19 @@
   <h1 style="text-align:center; margin-top:0; padding:1rem 0; font-size:1.7rem;">
     현장 업무처리 14종
   </h1>
-  <p style="text-align:center; margin-top:-0.6rem; color:#666; font-size:0.9rem;">
-    PART 01. 경범죄 및 즉결심판 처리절차
+  <p id="파트부제" style="text-align:center; margin-top:-0.6rem; color:#666; font-size:0.9rem;">
+    지역경찰 실전 액션 가이드 · PART를 선택하세요
   </p>
 
-  <div class="section">
+  <div class="section" id="파트선택섹션">
+    <h2>PART 선택</h2>
+    <label><input type="radio" name="part" value="1"> PART 01. 경범죄 및 즉결심판 처리절차</label>
+    <label><input type="radio" name="part" value="2"> PART 02. 정신질환자 응급입원 시 처리절차</label>
+  </div>
+
+  <div class="section hidden" id="절차선택섹션">
     <h2>1. 절차 선택</h2>
-    <label><input type="radio" name="사건" value="경범죄"> 경범죄(통고처분) 처리절차</label>
-    <label><input type="radio" name="사건" value="즉결심판"> 즉결심판 처리절차</label>
+    <div id="절차선택영역"></div>
   </div>
 
   <div class="section hidden" id="세부항목섹션">
@@ -254,18 +259,16 @@
     <div id="세부항목버튼영역"></div>
   </div>
 
-  <div class="section" id="필수서류섹션">
+  <div class="section hidden" id="필수서류섹션">
     <h2>3. 필수서류</h2>
     <div id="필수서류버튼영역">
       <button data-항목="필수서류">필수서류</button>
     </div>
   </div>
 
-  <div class="section">
+  <div class="section hidden" id="원본섹션">
     <h2>4. 원본 자료 보기</h2>
-    <button data-scan="scan-1.jpg">① 경범죄 처벌법 조항 · 처리절차</button>
-    <button data-scan="scan-2.jpg">② 즉결심판 처리 절차</button>
-    <button data-scan="scan-3.jpg">③ 즉결심판 전자화 업무처리 절차</button>
+    <div id="원본버튼영역"></div>
   </div>
 
   <div style="text-align: center;">
@@ -301,6 +304,36 @@ function 색상변환(text) {
     .replace(/\|\|(.+?)\|\|/g, '<span style="color: blue; font-weight: bold;">$1</span>')
     .replace(/\|(.+?)\|/g, '<span style="color: red; font-weight: bold;">$1</span>');
 }
+
+/* ===== PART 메타 정보 ===== */
+const 파트정보 = {
+  "1": {
+    부제: "PART 01. 경범죄 및 즉결심판 처리절차",
+    절차: [
+      { value: "경범죄", label: "경범죄(통고처분) 처리절차" },
+      { value: "즉결심판", label: "즉결심판 처리절차" },
+    ],
+    원본: [
+      { file: "scan-1.jpg", label: "① 경범죄 처벌법 조항 · 처리절차" },
+      { file: "scan-2.jpg", label: "② 즉결심판 처리 절차" },
+      { file: "scan-3.jpg", label: "③ 즉결심판 전자화 업무처리 절차" },
+    ],
+  },
+  "2": {
+    부제: "PART 02. 정신질환자 응급입원 시 처리절차",
+    절차: [
+      { value: "응급입원", label: "응급입원(경찰·의사 동의) 처리절차" },
+      { value: "행정입원", label: "행정입원(지자체장 신청) 처리절차" },
+    ],
+    원본: [
+      { file: "part2-1.jpg", label: "① 경찰관직무집행법 제4조 · 응급입원 개요" },
+      { file: "part2-2.jpg", label: "② 경찰의 역할 · 현장 대응" },
+      { file: "part2-3.jpg", label: "③ 정신질환자 5가지 입원 제도 · 응급입원 절차" },
+      { file: "part2-4.jpg", label: "④ 응급입원 판단매뉴얼 · 의뢰서 · 행정입원 절차" },
+      { file: "part2-5.jpg", label: "⑤ 행정입원 관련 서류 · 기타(1577-0199)" },
+    ],
+  },
+};
 
 /* ===== 데이터 (원본 자료 기반) ===== */
 const 세부내용Depth = {
@@ -408,6 +441,178 @@ const 세부내용Depth = {
       { text: "▸ 피해자 정보 (필요시)", depth: 0 },
     ],
   },
+
+  "응급입원": {
+    "경찰관직무집행법 제4조 (보호조치)": [
+      { text: "□ |대상|", depth: 0 },
+      { text: "→ ||정신착란자, 주취자, 자살시도자||", depth: 1 },
+      { text: "□ |요건|", depth: 0 },
+      { text: "→ 응급구호 필요성  |(현재의 자·타해 위험성)|", depth: 1 },
+      { text: "□ |행위 및 목적|", depth: 0 },
+      { text: "→ 신체적 자유를 일시적으로 제한하여 자·타의 위험 방지", depth: 1 },
+      { text: "□ |장소|", depth: 0 },
+      { text: "→ ||보건의료기관|| (병원, 보건소 등 보건의료서비스 제공 기관)", depth: 1 },
+      { text: "→ ||공공구호기관|| (아동·노인복지시설, 노숙인시설 등 사회보장시설 및 사회복지 증진 책임이 있는 시·군청)", depth: 1 },
+      { text: "→ ||경찰관서|| |||(최대 24시간 이내)|||", depth: 1 },
+    ],
+    "응급입원이란? (정의·위험성·긴급성)": [
+      { text: "□ |정의|", depth: 0 },
+      { text: "→ 비자의입원 중 한 종류의 입원으로, ||정신질환자로 추정되는 자||, |자·타해 위험|이 큰 사람을 ||의사·경찰의 동의를 받아|| 정신의료기관에 입원시키는 형태", depth: 1 },
+
+      { text: "□ |위험성| (자·타해 위험 판단)", depth: 0 },
+      { text: "→ 위험한 장소에서 뛰어내릴 듯한 언동과 자세를 취하는 경우", depth: 1 },
+      { text: "→ 위험한 약물을 과다 복용하거나, 손목·목 등 위험부위의 자해흔적이 뚜렷이 확인되는 경우", depth: 1 },
+      { text: "→ 차도·기찻길 등에 뛰어들거나, 화기류·번개탄·약물 등 위험물건을 가까이 하는 등 위험행위 지속", depth: 1 },
+      { text: "→ 망상·환각 상태에서 지속적으로 자해를 시도", depth: 1 },
+      { text: "→ 방치할 경우 저체온증·아사 등 |생명·신체의 위험이 예견|되는 경우", depth: 1 },
+
+      { text: "□ |긴급성|", depth: 0 },
+      { text: "→ 고위험자를 인수할 보호자가 없거나(보호자의 인수 거부 포함), 있더라도 단시간 내 도착이 어려운 경우", depth: 1 },
+      { text: "→ 야간·공휴일 등의 이유로 다른 방법에 의한 입원이 어려운 경우", depth: 1 },
+      { text: "→ 일정기간 이상 격리하지 않으면 추가적인 위험 발생이 예견되는 경우", depth: 1 },
+    ],
+    "경찰의 역할 · 현장 대응": [
+      { text: "□ ||현장 조치 흐름||", depth: 0 },
+      { text: "→ 발견 및 신고 접수", depth: 1 },
+      { text: "→ |위험도구 제거| (자·타해 위험도구 및 자살수단 확인)", depth: 1 },
+      { text: "→ 현장안전 확보", depth: 1 },
+      { text: "→ 폭력상황 발생 시 제지", depth: 1 },
+      { text: "→ |신원확인·위치추적|", depth: 1 },
+      { text: "→ 보호자 파악", depth: 1 },
+      { text: "→ 신체손상 여부 확인", depth: 1 },
+      { text: "→ 범죄 혐의 유무 파악 (상해·폭력·학대·마약 등)", depth: 1 },
+      { text: "※ |||범죄 혐의 파악 시, 수사 및 형사처벌 우선 진행|||", depth: 1.5 },
+      { text: "→ 응급입원 여부 판단 및 이송 또는 보호자 인계", depth: 1 },
+
+      { text: "□ |목적|", depth: 0 },
+      { text: "→ 정신질환자 등에 의한 급박한 자·타해 위험성을 제거하고 ||환자·주변 사람들의 안전을 보호||", depth: 1 },
+
+      { text: "□ |현장 대응 요령|", depth: 0 },
+      { text: "→ 신고자로부터 신고개요·피해상황 등을 청취 후 정신질환자 여부 판단", depth: 1 },
+      { text: "→ ||112시스템|| 등을 통해 정신질환자 관련 신고이력 확인", depth: 1 },
+      { text: "→ 신원을 신속히 확인, 가족 등 보호의무자에게 통보(인계) (이름·성별·나이·생년월일·주소·보호자/연락처 등)", depth: 1 },
+      { text: "→ 환청·피해망상 등으로 돌발행동 우려가 있으므로 대비태세 갖춤 |(경찰장구 휴대)|", depth: 1 },
+      { text: "※ |대상자가 자살도구를 소지한 경우, 신속히 수거, 신변안전 최우선 확보|", depth: 1.5 },
+      { text: "→ 자살기도자는 돌발행동 우려가 많으므로 자극을 주지 않도록 최대한 침착하게 행동 (「현장경찰 위기대응을 위한 대화법 안내서(자살)」 참조)", depth: 1 },
+      { text: "→ 개인정보 보호법을 준수하는 범위 내에서 |사진·동영상 촬영 등 현장 채증 실시|", depth: 1 },
+      { text: "→ 발견 시간·상태·조치 내용·인수자 인적사항·특이상황 등을 112신고시스템이나 ||근무일지에 반드시 상세히 기록||", depth: 1 },
+    ],
+    "정신질환자 5가지 입원 제도": [
+      { text: "□ |자의입원| (자의)", depth: 0 },
+      { text: "→ 정신질환 요함 / 본인동의 요함 / 보호자동의 불요 / 자·타해위험 불요 / 급박성 불요", depth: 1 },
+      { text: "→ 본인 신청으로 입원, 언제든 자유롭게 퇴원 가능", depth: 1 },
+
+      { text: "□ |동의입원| (자의)", depth: 0 },
+      { text: "→ 본인동의 요함 / 보호자동의 요함(1인)", depth: 1 },
+      { text: "→ 본인 신청 및 보호자 동의 필요, 전문의 판단 시 72시간 내 퇴원 제한 가능", depth: 1 },
+
+      { text: "□ |보호의무자에 의한 입원| (비자의)", depth: 0 },
+      { text: "→ 보호자동의 요함(2인) / 자·타해위험 요함", depth: 1 },
+      { text: "→ 보호의무자 2인의 신청과 전문의 진단에 의한 강제 입원", depth: 1 },
+
+      { text: "□ |행정입원| (비자의)", depth: 0 },
+      { text: "→ 자·타해위험 요함 / 급박성 불요", depth: 1 },
+      { text: "→ 지자체장에 의한 입원, ||경찰이 '진단 및 보호' 신청을 요청 가능||", depth: 1 },
+
+      { text: "□ ||응급입원|| (비자의)", depth: 0 },
+      { text: "→ 정신질환 여부: 추정되는 자 / 자·타해위험 요함(큼) / 급박성 요함", depth: 1 },
+      { text: "→ |||경찰·의사 등 동의로 진행, 3일 내 입원 가능한 경찰 핵심 업무|||", depth: 1 },
+    ],
+    "응급입원 절차": [
+      { text: "□ |① 응급입원 의뢰|", depth: 0 },
+      { text: "→ 정신질환 추정 + 급박한 자·타해 위험성 (제1항)", depth: 1 },
+      { text: "→ 누구나 응급입원 의뢰 가능 (제1항)", depth: 1 },
+      { text: "→ ||경찰관 또는 구급대원이 호송|| (제2항)", depth: 1 },
+
+      { text: "□ |② 3일간 응급입원|", depth: 0 },
+      { text: "→ 입원 당일 및 공휴일 제외, 3일 이내에 정신건강의학과 전문의의 관찰·진단 (제4항)", depth: 1 },
+      { text: "→ ||경찰관 + 의사 동의로 입원|| (제3항)", depth: 1 },
+      { text: "→ |||★ 응급입원 의뢰서 작성|||", depth: 1.5 },
+
+      { text: "□ |③ 입원필요성 판단|", depth: 0 },
+      { text: "→ 아니오 → 퇴원", depth: 1 },
+      { text: "→ 예 → 입원유형 전환 (다른 종류의 입원으로 전환, 제5항)", depth: 1 },
+      { text: "→ [입원적합성심사위원회 심의·의결]", depth: 1.5 },
+
+      { text: "※ |||응급입원 판단 → 병원섭외(정신응급 경찰대응팀·합동대응센터, 위기개입팀) → 이송|||", depth: 1.5 },
+    ],
+    "응급입원 판단매뉴얼 (붙임 1)": [
+      { text: "□ |정신질환 여부|", depth: 0 },
+      { text: "→ 과거 정신질환 치료 이력 또는 약물 복용력 여부", depth: 1 },
+      { text: "→ 정신질환 관련 환각·망상·대인기피 등 증상 여부", depth: 1 },
+      { text: "□ |자·타해 위험성|", depth: 0 },
+      { text: "→ 과거 폭행·난동 등을 이유로 112신고·처벌 받은 이력", depth: 1 },
+      { text: "→ 최근 신체적 위해를 가한 적, 자해·자살 시도 이력", depth: 1 },
+      { text: "→ 물건을 부순 적, 현재 약물치료를 중단한 상태 여부", depth: 1 },
+      { text: "□ |급박성|", depth: 0 },
+      { text: "→ 자·타해 우려로 다른 종류의 입원이 어려운 경우", depth: 1 },
+      { text: "→ 보호자 부재 또는 인수 거부", depth: 1 },
+      { text: "※ 요건 미충족 시 |입원 거부 가능| → 정신건강센터 통보, |행정입원 신청 요청|", depth: 1.5 },
+    ],
+    "필수서류": [
+      { text: "▸ ||응급입원 의뢰서||", depth: 0 },
+      { text: "→ 경찰관 2인 중 |1명은 '신청인'|, |다른 1명은 '동의경찰관'|에 각각 기재 |||(동일인 기재 X)|||", depth: 1 },
+      { text: "→ 신청인·동의경찰관 인적사항: 현장 경찰관 (지역경찰·형사·여청 등)", depth: 1 },
+      { text: "▸ ||응급입원 판단매뉴얼 (붙임 1)|| — 현장상황 메모", depth: 0 },
+      { text: "▸ 채증 자료 (사진·동영상), 근무일지·112신고시스템 기록", depth: 0 },
+    ],
+    "기타 (위기 대응 자원)": [
+      { text: "□ ||정신건강 위기상담전화 1577-0199|| |(365일 24시간)|", depth: 0 },
+      { text: "→ 각 시·도청 지정 의료기관의 |빈 병상을 실시간 확인|, 정신건강상담 등", depth: 1 },
+      { text: "→ 평일 주간: 시·군 기초정신건강복지센터", depth: 1 },
+      { text: "→ 평일 야간 및 휴일: 위기개입팀", depth: 1 },
+      { text: "□ ||정신응급 합동·경찰대응팀|| (각 시·도청)", depth: 0 },
+      { text: "→ 고위험 정신질환자 발생 시 |병원 확인·출동 등| 업무 지원", depth: 1 },
+    ],
+  },
+
+  "행정입원": {
+    "행정입원 개요": [
+      { text: "□ |개념|", depth: 0 },
+      { text: "→ 정신질환 + 자·타해 위험성이 있는 자에 대해 ||지자체장(시·군·구청장)에 의해|| 이루어지는 비자의입원", depth: 1 },
+      { text: "→ |급박성은 요하지 않음| (응급입원과의 차이)", depth: 1 },
+      { text: "□ |경찰의 역할|", depth: 0 },
+      { text: "→ ||경찰관은 정신과전문의 또는 정신건강전문요원에게 '진단 및 보호 신청'을 요청할 수 있음|| (제1항)", depth: 1 },
+      { text: "※ |||★ 경찰은 신청에 대한 요청 가능 (직접 신청 주체는 아님)|||", depth: 1.5 },
+    ],
+    "행정입원 절차": [
+      { text: "□ |① 정신질환자 발견|", depth: 0 },
+      { text: "→ 정신질환 + 자·타해 위험성 (제1항)", depth: 1 },
+
+      { text: "□ |② 진단 및 보호 신청|", depth: 0 },
+      { text: "→ 정신과전문의·정신건강전문요원", depth: 1 },
+      { text: "→ |||★ 경찰은 신청에 대한 요청 가능|||", depth: 1.5 },
+      { text: "→ 진단 의뢰 (시·군·구청장)", depth: 1 },
+
+      { text: "□ |③ 전문의 진단|", depth: 0 },
+      { text: "→ 자·타해 위험 및 치료의 필요성 판단", depth: 1 },
+      { text: "→ 입원 의뢰 (입원 필요시)", depth: 1 },
+
+      { text: "□ |④ 행정입원 개시|", depth: 0 },
+
+      { text: "□ |⑤ 2주 내 2명의 정신과 전문의 소견 확인|", depth: 0 },
+      { text: "→ 소견 일치 → ||입원유지|| (입원연장 시 입원연장심사 청구)", depth: 1 },
+      { text: "→ 소견 불일치 → 퇴원", depth: 1 },
+
+      { text: "※ |||3개월마다 연장 심사 실시 [연장 횟수 제한 없음]|||", depth: 1.5 },
+    ],
+    "필수서류": [
+      { text: "▸ ||진단 및 보호신청서||", depth: 0 },
+      { text: "→ 신청인: |정신건강복지센터|", depth: 1 },
+      { text: "→ 대상자 인적사항·증상 등 기재", depth: 1 },
+      { text: "→ 보호의무자: |||보호자가 없는 경우 작성 X|||", depth: 1 },
+      { text: "→ 경찰관 인적사항 기재", depth: 1 },
+      { text: "→ 제출처: 특별자치시장·특별자치도지사·시장·군수·구청장", depth: 1 },
+    ],
+    "기타 (위기 대응 자원)": [
+      { text: "□ ||정신건강 위기상담전화 1577-0199|| |(365일 24시간)|", depth: 0 },
+      { text: "→ 각 시·도청 지정 의료기관의 |빈 병상을 실시간 확인|, 정신건강상담 등", depth: 1 },
+      { text: "→ 평일 주간: 시·군 기초정신건강복지센터", depth: 1 },
+      { text: "→ 평일 야간 및 휴일: 위기개입팀", depth: 1 },
+      { text: "□ ||정신응급 합동·경찰대응팀|| (각 시·도청)", depth: 0 },
+      { text: "→ 고위험 정신질환자 발생 시 |병원 확인·출동 등| 업무 지원", depth: 1 },
+    ],
+  },
 };
 
 /* ===== UI 렌더링 ===== */
@@ -447,29 +652,78 @@ function createSubContentDepth(사건, 항목) {
   return 내용Div;
 }
 
+let currentPart = null;
 let currentEvent = null;
 
-document.querySelectorAll('input[name="사건"]').forEach(radio => {
+/* ----- PART 선택 ----- */
+document.querySelectorAll('input[name="part"]').forEach(radio => {
   radio.addEventListener('change', () => {
-    const 사건 = radio.value;
-    currentEvent = 사건;
-    const 세부버튼영역 = document.getElementById('세부항목버튼영역');
-    세부버튼영역.innerHTML = '';
-    const 항목들 = Object.keys(세부내용Depth[사건])
-      .filter(항목 => 항목 !== "필수서류");
-    항목들.forEach(항목 => {
-      const btn = document.createElement('button');
-      btn.innerHTML = 색상변환(항목);
-      btn.addEventListener('click', () => {
-        clearSubContents();
-        const 내용 = createSubContentDepth(사건, 항목);
-        btn.insertAdjacentElement('afterend', 내용);
-      });
-      세부버튼영역.appendChild(btn);
+    currentPart = radio.value;
+    currentEvent = null;
+    const 정보 = 파트정보[currentPart];
+
+    document.getElementById('파트부제').textContent = 정보.부제;
+
+    // 1. 절차 선택 라디오 구성
+    const 절차영역 = document.getElementById('절차선택영역');
+    절차영역.innerHTML = '';
+    정보.절차.forEach(항목 => {
+      const label = document.createElement('label');
+      label.style.display = 'block';
+      label.style.margin = '0.3rem 0';
+      label.innerHTML =
+        `<input type="radio" name="사건" value="${항목.value}"> ${항목.label}`;
+      절차영역.appendChild(label);
     });
-    document.getElementById('세부항목섹션').classList.remove('hidden');
+    바인드사건라디오();
+    document.getElementById('절차선택섹션').classList.remove('hidden');
+
+    // 2. 세부 항목 초기화
+    document.getElementById('세부항목버튼영역').innerHTML = '';
+    document.getElementById('세부항목섹션').classList.add('hidden');
+    clearSubContents();
+
+    // 3. 필수서류 섹션 노출
+    document.getElementById('필수서류섹션').classList.remove('hidden');
+
+    // 4. 원본 자료 버튼 구성
+    const 원본영역 = document.getElementById('원본버튼영역');
+    원본영역.innerHTML = '';
+    정보.원본.forEach(자료 => {
+      const btn = document.createElement('button');
+      btn.dataset.scan = 자료.file;
+      btn.textContent = 자료.label;
+      원본영역.appendChild(btn);
+    });
+    document.getElementById('원본섹션').classList.remove('hidden');
   });
 });
+
+/* ----- 절차(사건) 선택 ----- */
+function 바인드사건라디오() {
+  document.querySelectorAll('input[name="사건"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const 사건 = radio.value;
+      currentEvent = 사건;
+      const 세부버튼영역 = document.getElementById('세부항목버튼영역');
+      세부버튼영역.innerHTML = '';
+      clearSubContents();
+      const 항목들 = Object.keys(세부내용Depth[사건])
+        .filter(항목 => 항목 !== "필수서류");
+      항목들.forEach(항목 => {
+        const btn = document.createElement('button');
+        btn.innerHTML = 색상변환(항목);
+        btn.addEventListener('click', () => {
+          clearSubContents();
+          const 내용 = createSubContentDepth(사건, 항목);
+          btn.insertAdjacentElement('afterend', 내용);
+        });
+        세부버튼영역.appendChild(btn);
+      });
+      document.getElementById('세부항목섹션').classList.remove('hidden');
+    });
+  });
+}
 
 document.querySelectorAll('#필수서류버튼영역 button').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -490,19 +744,19 @@ const docClose = document.getElementById('docClose');
 docClose.addEventListener('click', closeDocumentModal);
 modal.addEventListener('click', (e) => { if (e.target === modal) closeDocumentModal(); });
 
-document.querySelectorAll('button[data-scan]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const src = btn.dataset.scan;
-    docTitle.textContent = btn.textContent.trim();
-    docContent.innerHTML = '';
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = btn.textContent.trim();
-    docContent.appendChild(img);
-    docDownload.href = src;
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-  });
+document.getElementById('원본버튼영역').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-scan]');
+  if (!btn) return;
+  const src = btn.dataset.scan;
+  docTitle.textContent = btn.textContent.trim();
+  docContent.innerHTML = '';
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = btn.textContent.trim();
+  docContent.appendChild(img);
+  docDownload.href = src;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
 });
 
 function closeDocumentModal() {
