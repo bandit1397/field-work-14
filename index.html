@@ -43,83 +43,11 @@
       margin: 0.3rem auto;
     }
 
-    /* 로고(표지) 화면 */
-    #logo-screen {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      background: #b3141b;
-      background: linear-gradient(160deg, #d21f27 0%, #8f0f15 100%);
-      cursor: pointer;
-      transition: transform 2s ease, opacity 2s ease;
-    }
-
-    #logo-screen .badge {
-      border: 3px solid #ffd24d;
-      color: #ffd24d;
-      font-weight: 800;
-      font-size: 1.1rem;
-      padding: 0.4rem 0.9rem;
-      border-radius: 6px;
-      letter-spacing: 2px;
-      margin-bottom: 1.4rem;
-    }
-
-    #logo-screen .stars {
-      color: #ffd24d;
-      letter-spacing: 6px;
-      font-size: 1.2rem;
-      margin-bottom: 0.6rem;
-    }
-
-    #logo-screen h1 {
-      color: #fff;
-      font-size: 2.6rem;
-      margin: 0;
-      text-align: center;
-      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
-    }
-
-    #logo-screen .sub {
-      color: #ffe6a1;
-      margin-top: 1rem;
-      font-size: 1rem;
-    }
-
-    #logo-screen .tap {
-      color: #ffffffcc;
-      margin-top: 2.4rem;
-      font-size: 0.9rem;
-      animation: blink 1.4s ease-in-out infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 0.35; }
-      50% { opacity: 1; }
-    }
-
-    .logo-zoom-out {
-      transform: scale(1.5);
-      opacity: 0;
-    }
-
-    /* 매뉴얼 화면 */
+    /* 매뉴얼 화면: 표지 스플래시 없이 바로 표시 */
     #manual-screen {
       padding: 1rem;
       max-width: 900px;
       margin: 0 auto;
-      transform: scale(0.8);
-      opacity: 0;
-      transition: transform 1s ease, opacity 1s ease;
-      pointer-events: none;
-    }
-
-    #manual-screen.show {
-      transform: scale(1);
-      opacity: 1;
-      pointer-events: auto;
     }
 
     ul, li {
@@ -224,15 +152,6 @@
 </head>
 
 <body>
-
-<!-- 표지 화면 -->
-<div id="logo-screen">
-  <div class="badge">지역경찰</div>
-  <div class="stars">★ ★ ★ ★ ★ ★ ★</div>
-  <h1>현장 업무처리 14종</h1>
-  <div class="sub">지역경찰 실전 액션 가이드</div>
-  <div class="tap">화면을 눌러 시작하기</div>
-</div>
 
 <div id="manual-screen">
 
@@ -813,17 +732,6 @@ function closeDocumentModal() {
   modal.setAttribute('aria-hidden', 'true');
 }
 
-/* ===== 표지 → 매뉴얼 전환 ===== */
-const logoScreen = document.getElementById('logo-screen');
-const manualScreen = document.getElementById('manual-screen');
-
-logoScreen.addEventListener('click', () => {
-  logoScreen.classList.add('logo-zoom-out');
-  setTimeout(() => {
-    logoScreen.style.display = 'none';
-    manualScreen.classList.add('show');
-  }, 1200);
-});
 </script>
 
 </body>
